@@ -1,6 +1,6 @@
 #include"../include/eight-puzzle.hpp"
 
-EightPuzzle::EightPuzzle(eight_puzzle_intstance_t instance) {
+EightPuzzle::EightPuzzle(eight_puzzle_intstance_t& instance) {
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
     for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
       this->instance[i][j] = instance[i][j];
@@ -8,32 +8,36 @@ EightPuzzle::EightPuzzle(eight_puzzle_intstance_t instance) {
   }
 }
 
+EightPuzzle::EightPuzzle() {
+
+}
+
 EightPuzzle::~EightPuzzle() {
 }
 
 /* ===================== Static Begin ===================== */
 
-EightPuzzle* EightPuzzle::read_instance(std::istream& in) {
+EightPuzzle EightPuzzle::read_instance(std::istream& in) {
   eight_puzzle_intstance_t instance;
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
     for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
       in >> instance[i][j];
     }
   }
-  return new EightPuzzle(instance);
+  return EightPuzzle(instance);
 }
 
-EightPuzzle* EightPuzzle::read_instance(char const* args[]) {
+EightPuzzle EightPuzzle::read_instance(char const* args[]) {
   eight_puzzle_intstance_t instance;
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
     for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
       instance[i][j] = atoi(args[i * PUZZLE_INSTANCE_WIDTH + j]);
     }
   }
-  return new EightPuzzle(instance);
+  return EightPuzzle(instance);
 }
 
-void EightPuzzle::print_instance(eight_puzzle_intstance_t instance, std::ostream& out) {
+void EightPuzzle::print_instance(eight_puzzle_intstance_t& instance, std::ostream& out) {
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
     for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
       out << instance[i][j] << " ";
@@ -43,7 +47,7 @@ void EightPuzzle::print_instance(eight_puzzle_intstance_t instance, std::ostream
   out << std::endl;
 }
 
-bool EightPuzzle::is_valid(eight_puzzle_intstance_t instance) {
+bool EightPuzzle::is_valid(eight_puzzle_intstance_t& instance) {
   int positions[PUZZLE_INSTANCE_SIZE] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
@@ -60,7 +64,7 @@ bool EightPuzzle::is_valid(eight_puzzle_intstance_t instance) {
   return true;
 }
 
-bool EightPuzzle::is_solved(eight_puzzle_intstance_t instance) {
+bool EightPuzzle::is_solved(eight_puzzle_intstance_t& instance) {
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
     for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
       int expected_value = ((i * PUZZLE_INSTANCE_WIDTH) + j + 1) % (PUZZLE_INSTANCE_SIZE);

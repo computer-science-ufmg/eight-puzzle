@@ -14,18 +14,19 @@ private:
   eight_puzzle_intstance_t instance;
 
 public:
-  EightPuzzle(eight_puzzle_intstance_t instance);
+  EightPuzzle(eight_puzzle_intstance_t& instance);
+  EightPuzzle();
   ~EightPuzzle();
 
   void print_instance(std::ostream& out = std::cout);
   bool is_valid();
   bool is_solved();
 
-  static EightPuzzle* read_instance(std::istream& in = std::cin);
-  static EightPuzzle* read_instance(char const* args[]);
-  static void print_instance(eight_puzzle_intstance_t instance, std::ostream& out = std::cout);
-  static bool is_valid(eight_puzzle_intstance_t instance);
-  static bool is_solved(eight_puzzle_intstance_t instance);
+  static EightPuzzle read_instance(std::istream& in = std::cin);
+  static EightPuzzle read_instance(char const* args[]);
+  static void print_instance(eight_puzzle_intstance_t& instance, std::ostream& out = std::cout);
+  static bool is_valid(eight_puzzle_intstance_t& instance);
+  static bool is_solved(eight_puzzle_intstance_t& instance);
 };
 
 #endif
