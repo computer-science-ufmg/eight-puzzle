@@ -14,18 +14,15 @@ int main(int argc, char const* argv[]) {
 
   eight_puzzle.print_instance();
 
-  if (eight_puzzle.is_valid()) {
-    std::cout << "Valid!" << std::endl;
-  }
-  else {
-    std::cout << "Not valid!" << std::endl;
-  }
-
-  if (eight_puzzle.is_solved()) {
-    std::cout << "Solved!" << std::endl;
-  }
-  else {
-    std::cout << "Not solved!" << std::endl;
+  if (argc > 1 && argv[1][0] == 'P') {
+    while (!eight_puzzle.is_solved()) {
+      std::cout << "0: UP\n1: DOWN\n2: LEFT\n3: RIGHT\nEnter a direction: ";
+      int direction;
+      std::cin >> direction;
+      eight_puzzle.move(direction);
+      eight_puzzle.print_instance();
+    }
+    printf("Solved!\n");
   }
 
   return 0;
