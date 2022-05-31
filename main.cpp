@@ -1,4 +1,5 @@
 #include<iostream>
+#include<stack>
 
 #include"./include/eight-puzzle.hpp"
 #include"./include/solver/solver.hpp"
@@ -30,9 +31,19 @@ ISolver* get_solver(char algorithm) {
 
 void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
   SolverNode* solution_node = solver->solve(puzzle);
-  if (print_solution && solution_node != nullptr) {
-    printf("Solution:\n");
-    solution_node->puzzle.print_instance();
+  std::stack<SolverNode*> moves;
+
+  if (print_solution) {
+    while (solution_node != nullptr) {
+      moves.push(solution_node);
+      solution_node = solution_node->parent;
+    }
+    while (!moves.empty()) {
+      solution_node = moves.top();
+      moves.pop();
+      solution_node->puzzle.print_instance();
+      delete solution_node;
+    }
   }
 }
 
@@ -46,6 +57,13 @@ int main(int argc, char const* argv[]) {
     puzzle = EightPuzzle::read_instance();
   }
 
+  if (!puzzle.is_valid()) {
+    std::cout << "Invalid puzzle!\n";
+    return 1;
+  }
+
+  std::cout << "Puzzle:\n";
+  puzzle.print_instance();
 
   if (argc > 1) {
     char exec_option = argv[1][0];
