@@ -89,6 +89,10 @@ bool EightPuzzle::is_solved(eight_puzzle_intstance_t& instance) {
   return true;
 }
 
+bool EightPuzzle::is_inverse_move(direction_t a, direction_t b) {
+  return (a + b == UP + DOWN) || (a + b == LEFT + RIGHT);
+}
+
 /* ====================== Static End ====================== */
 
 eight_puzzle_intstance_t& EightPuzzle::get_instance() {
@@ -107,8 +111,27 @@ bool EightPuzzle::is_solved() {
   return EightPuzzle::is_solved(this->instance);
 }
 
+bool EightPuzzle::can_move(direction_t direction) {
+  switch (direction) {
+  case DOWN:
+    return this->empty_x + 1 < PUZZLE_INSTANCE_HEIGHT;
+  case UP:
+    return this->empty_x > 0;
+  case RIGHT:
+    return this->empty_y + 1 < PUZZLE_INSTANCE_WIDTH;
+  case LEFT:
+    return this->empty_y > 0;
+  default:
+    return false;
+  }
+}
+
 void EightPuzzle::move(direction_t direction) {
   int x = this->empty_x, y = this->empty_y, nx, ny;
+
+  if (!can_move(direction)) {
+    return;
+  }
 
   switch (direction) {
   case DOWN:
@@ -142,22 +165,22 @@ std::vector<EightPuzzle> EightPuzzle::get_possible_moves() {
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
     for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
       if (instance[i][j] == 0) {
-        if (i > 0) {
+        if (can_move(DOWN)) {
           EightPuzzle possible_move(instance);
           possible_move.move(DOWN);
           possible_moves.push_back(possible_move);
         }
-        if (i < PUZZLE_INSTANCE_HEIGHT - 1) {
+        if (can_move(UP)) {
           EightPuzzle possible_move(instance);
           possible_move.move(UP);
           possible_moves.push_back(possible_move);
         }
-        if (j > 0) {
+        if (can_move(RIGHT)) {
           EightPuzzle possible_move(instance);
           possible_move.move(RIGHT);
           possible_moves.push_back(possible_move);
         }
-        if (j < PUZZLE_INSTANCE_WIDTH - 1) {
+        if (can_move(LEFT)) {
           EightPuzzle possible_move(instance);
           possible_move.move(LEFT);
           possible_moves.push_back(possible_move);

@@ -1,5 +1,7 @@
 #include<queue>
 #include<map>
+#include<vector>
+#include<exception>
 
 #include"../../include/solver/bfs-solver.hpp"
 
@@ -9,11 +11,19 @@ BFSSolver::BFSSolver() {
 BFSSolver::~BFSSolver() {
 }
 
-SolverNode* BFSSolver::solve(EightPuzzle& puzzle) {
+solution_t BFSSolver::solve(EightPuzzle& puzzle) {
   std::queue<SolverNode*> queue;
+  std::vector<SolverNode*> nodes;
   std::map<std::string, bool> visited;
+  SolverNode* new_node = nullptr;
 
-  queue.push(create_solver_node(puzzle, nullptr, 0));
+  if (!puzzle.is_valid()) {
+    throw std::invalid_argument("Cannot solve invalid puzzle");
+  }
+
+  new_node = create_solver_node(puzzle, nullptr);
+  queue.push(new_node);
+  nodes.push_back(new_node);
 
   while (!queue.empty()) {
     SolverNode* node = queue.front();
@@ -22,17 +32,21 @@ SolverNode* BFSSolver::solve(EightPuzzle& puzzle) {
     EightPuzzle& instance = node->puzzle;
     visited[instance.get_id()] = true;
     if (instance.is_solved()) {
-      return node;
+      solution_t solution = this->get_path(node);
+      this->free_nodes(nodes);
+      return solution;
     }
 
     std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
     for (std::vector<EightPuzzle>::iterator it = possible_moves.begin(); it != possible_moves.end(); ++it) {
       EightPuzzle possible_move = *it;
-      if (!visited[possible_move.get_id()]) {
-        queue.push(create_solver_node(possible_move, node, possible_move.get_last_move()));
+      if (!visited[possible_move.get_id()] && !EightPuzzle::is_inverse_move(possible_move.get_last_move(), node->last_move)) {
+        new_node = create_solver_node(possible_move, node);
+        queue.push(new_node);
+        nodes.push_back(new_node);
       }
     }
   }
 
-  return nullptr;
+  throw std::logic_error("Impossible exception");
 }

@@ -13,6 +13,7 @@
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
+#define NO_MOVE 9999
 
 typedef int direction_t;
 
@@ -23,7 +24,7 @@ private:
   eight_puzzle_intstance_t instance;
   int empty_x;
   int empty_y;
-  int last_move = -1;
+  int last_move = NO_MOVE;
 
 public:
   EightPuzzle(eight_puzzle_intstance_t& instance);
@@ -35,6 +36,7 @@ public:
   bool is_valid();
   bool is_solved();
   std::vector<EightPuzzle> get_possible_moves();
+  bool can_move(direction_t direction);
   void move(direction_t direction);
   std::string get_id();
   int get_last_move();
@@ -44,6 +46,7 @@ public:
   static void print_instance(eight_puzzle_intstance_t& instance, std::ostream& out = std::cout);
   static bool is_valid(eight_puzzle_intstance_t& instance);
   static bool is_solved(eight_puzzle_intstance_t& instance);
+  static bool is_inverse_move(direction_t a, direction_t b);
 };
 
 #endif

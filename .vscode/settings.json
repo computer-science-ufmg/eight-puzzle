@@ -67,6 +67,9 @@
     "iterator": "cpp",
     "utility": "cpp",
     "deque": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "__tree": "cpp",
+    "map": "cpp",
+    "stack": "cpp"
   }
 }

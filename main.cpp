@@ -30,19 +30,15 @@ ISolver* get_solver(char algorithm) {
 }
 
 void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
-  SolverNode* solution_node = solver->solve(puzzle);
-  std::stack<SolverNode*> moves;
+  solution_t solution = solver->solve(puzzle);
 
   if (print_solution) {
-    while (solution_node != nullptr) {
-      moves.push(solution_node);
-      solution_node = solution_node->parent;
-    }
-    while (!moves.empty()) {
-      solution_node = moves.top();
-      moves.pop();
-      solution_node->puzzle.print_instance();
-      delete solution_node;
+    std::cout << solution.size() << "\n\n";
+    while (!solution.empty()) {
+      direction_t move = solution.front();
+      solution.pop();
+      puzzle.move(move);
+      puzzle.print_instance();
     }
   }
 }
@@ -50,7 +46,7 @@ void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
 int main(int argc, char const* argv[]) {
   EightPuzzle puzzle;
 
-  if (argc >= 11) {
+  if (argc >= 2 + PUZZLE_INSTANCE_SIZE) {
     puzzle = EightPuzzle::read_instance(argv + 2);
   }
   else {
@@ -61,9 +57,6 @@ int main(int argc, char const* argv[]) {
     std::cout << "Invalid puzzle!\n";
     return 1;
   }
-
-  std::cout << "Puzzle:\n";
-  puzzle.print_instance();
 
   if (argc > 1) {
     char exec_option = argv[1][0];

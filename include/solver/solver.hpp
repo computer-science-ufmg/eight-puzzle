@@ -1,7 +1,11 @@
 #ifndef SOLVER_HPP
 #define SOLVER_HPP
 
+#include<vector>
+
 #include "../eight-puzzle.hpp"
+
+typedef std::queue<direction_t> solution_t;
 
 struct SolverNode {
   EightPuzzle puzzle;
@@ -13,9 +17,12 @@ struct SolverNode {
 class ISolver {
 public:
   virtual ~ISolver() {}
-  virtual SolverNode* solve(EightPuzzle& puzzle) = 0;
+  virtual solution_t solve(EightPuzzle& puzzle) = 0;
+
+  void free_nodes(std::vector<SolverNode*>& nodes);
+  std::queue<direction_t> get_path(SolverNode* node);
 };
 
-SolverNode* create_solver_node(EightPuzzle& puzzle, SolverNode* parent, int last_move);
+SolverNode* create_solver_node(EightPuzzle& puzzle, SolverNode* parent);
 
 #endif

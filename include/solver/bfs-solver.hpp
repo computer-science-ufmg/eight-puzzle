@@ -10,7 +10,7 @@ public:
   BFSSolver();
   ~BFSSolver();
 
-  SolverNode* solve(EightPuzzle& puzzle);
+  solution_t solve(EightPuzzle& puzzle);
 };
 
 #endif
