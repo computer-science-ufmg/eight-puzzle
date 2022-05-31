@@ -1,4 +1,5 @@
 #include<queue>
+#include<map>
 
 #include"../../include/solver/bfs-solver.hpp"
 
@@ -8,22 +9,30 @@ BFSSolver::BFSSolver() {
 BFSSolver::~BFSSolver() {
 }
 
-void BFSSolver::solve(EightPuzzle& puzzle) {
-  // std::queue<eight_puzzle_intstance_t> queue;
+SolverNode* BFSSolver::solve(EightPuzzle& puzzle) {
+  std::queue<SolverNode*> queue;
+  std::map<std::string, bool> visited;
 
-  // queue.push(puzzle.get_instance());
+  queue.push(create_solver_node(puzzle, nullptr, 0));
 
-  // while (!queue.empty()) {
-  //   eight_puzzle_intstance_t& instance = queue.front();
-  //   queue.pop();
+  while (!queue.empty()) {
+    SolverNode* node = queue.front();
+    queue.pop();
 
-  //   if (EightPuzzle::is_solved(instance)) {
-  //     return;
-  //   }
+    EightPuzzle& instance = node->puzzle;
+    visited[instance.get_id()] = true;
+    if (instance.is_solved()) {
+      return node;
+    }
 
-  //   std::vector<eight_puzzle_intstance_t> possible_moves = puzzle.get_possible_moves(instance);
-  //   for (int i = 0; i < possible_moves.size(); i++) {
-  //     queue.push(possible_moves[i]);
-  //   }
-  // }
+    std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
+    for (std::vector<EightPuzzle>::iterator it = possible_moves.begin(); it != possible_moves.end(); ++it) {
+      EightPuzzle possible_move = *it;
+      if (!visited[possible_move.get_id()]) {
+        queue.push(create_solver_node(possible_move, node, possible_move.get_last_move()));
+      }
+    }
+  }
+
+  return nullptr;
 }

@@ -1,5 +1,7 @@
 #include"../include/eight-puzzle.hpp"
 
+#include<sstream>
+
 EightPuzzle::EightPuzzle(eight_puzzle_intstance_t& instance) {
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
     for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
@@ -40,38 +42,6 @@ EightPuzzle EightPuzzle::read_instance(char const* args[]) {
     }
   }
   return EightPuzzle(instance);
-}
-
-std::vector<EightPuzzle> EightPuzzle::get_possible_moves(eight_puzzle_intstance_t& instance) {
-  std::vector<EightPuzzle> possible_moves;
-  for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
-    for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
-      if (instance[i][j] == 0) {
-        if (i > 0) {
-          EightPuzzle possible_move(instance);
-          possible_move.move(DOWN);
-          possible_moves.push_back(possible_move);
-        }
-        if (i < PUZZLE_INSTANCE_HEIGHT - 1) {
-          EightPuzzle possible_move(instance);
-          possible_move.move(UP);
-          possible_moves.push_back(possible_move);
-        }
-        if (j > 0) {
-          EightPuzzle possible_move(instance);
-          possible_move.move(RIGHT);
-          possible_moves.push_back(possible_move);
-        }
-        if (j < PUZZLE_INSTANCE_WIDTH - 1) {
-          EightPuzzle possible_move(instance);
-          possible_move.move(LEFT);
-          possible_moves.push_back(possible_move);
-        }
-        break;
-      }
-    }
-  }
-  return possible_moves;
 }
 
 void EightPuzzle::print_instance(eight_puzzle_intstance_t& instance, std::ostream& out) {
@@ -161,7 +131,54 @@ void EightPuzzle::move(direction_t direction) {
 
   this->empty_x = nx;
   this->empty_y = ny;
+  this->last_move = direction;
 
   this->instance[x][y] = this->instance[nx][ny];
   this->instance[this->empty_x][this->empty_y] = 0;
+}
+
+std::vector<EightPuzzle> EightPuzzle::get_possible_moves() {
+  std::vector<EightPuzzle> possible_moves;
+  for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
+    for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
+      if (instance[i][j] == 0) {
+        if (i > 0) {
+          EightPuzzle possible_move(instance);
+          possible_move.move(DOWN);
+          possible_moves.push_back(possible_move);
+        }
+        if (i < PUZZLE_INSTANCE_HEIGHT - 1) {
+          EightPuzzle possible_move(instance);
+          possible_move.move(UP);
+          possible_moves.push_back(possible_move);
+        }
+        if (j > 0) {
+          EightPuzzle possible_move(instance);
+          possible_move.move(RIGHT);
+          possible_moves.push_back(possible_move);
+        }
+        if (j < PUZZLE_INSTANCE_WIDTH - 1) {
+          EightPuzzle possible_move(instance);
+          possible_move.move(LEFT);
+          possible_moves.push_back(possible_move);
+        }
+        break;
+      }
+    }
+  }
+  return possible_moves;
+}
+
+std::string EightPuzzle::get_id() {
+  std::stringstream ss;
+  for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
+    for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
+      ss << this->instance[i][j];
+    }
+  }
+  return ss.str();
+}
+
+int EightPuzzle::get_last_move() {
+  return last_move;
 }
