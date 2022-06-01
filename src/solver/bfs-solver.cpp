@@ -2,7 +2,6 @@
 #include<map>
 #include<vector>
 #include<exception>
-#include<sstream>
 
 #include"../../include/solver/bfs-solver.hpp"
 
@@ -54,8 +53,6 @@ solution_t BFSSolver::solve(EightPuzzle& puzzle) {
     }
   }
 
-  std::stringstream ss;
-  ss << "Impossible exception: no solution found\nLast node: " << nodes.back()->puzzle.get_id();
   free_nodes(nodes);
-  throw std::logic_error(ss.str());
+  throw std::logic_error("Impossible exception: puzzle has no solution");
 }

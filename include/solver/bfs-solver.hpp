@@ -1,3 +1,11 @@
+/**
+ * @file bfs-solver.hpp
+ * @brief Breadth-first search solver implementation. Optimal and complete algorithm.
+ * @author Luiz Philipe <luizphilippe@dcc.ufmg.br>
+ * @version 0.1
+ *
+ */
+
 #ifndef BFS_SOLVER_HPP
 #define BFS_SOLVER_HPP
 

@@ -10,7 +10,6 @@ else
   testnames=$(ls ./tests | grep in | sort -V | head -n $LIMIT)
 fi
 
-
 total=0
 passed=0
 failed=0
