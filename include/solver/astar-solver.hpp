@@ -1,5 +1,5 @@
 /**
- * @file ucs-solver.hpp
+ * @file astar-solver.hpp
  * @brief A* solver implementation. Optimal and complete algorithm.
  * @author Luiz Philipe <luizphilippe@dcc.ufmg.br>
  * @version 0.1

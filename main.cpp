@@ -8,18 +8,8 @@
 #include"./include/solver/astar-solver.hpp"
 #include"./include/solver/gbf-solver.hpp"
 #include"./include/solver/hill-climbing-solver.hpp"
+#include"./include/solver/human-solver.hpp"
 
-void play(EightPuzzle& puzzle) {
-  puzzle.print_instance();
-  while (!puzzle.is_solved()) {
-    std::cout << "0: UP\n1: DOWN\n2: LEFT\n3: RIGHT\nEnter a direction: ";
-    int direction;
-    std::cin >> direction;
-    puzzle.move(direction);
-    puzzle.print_instance();
-  }
-  printf("Solved!\n");
-}
 
 ISolver* get_solver(char algorithm) {
   switch (algorithm) {
@@ -40,6 +30,9 @@ ISolver* get_solver(char algorithm) {
 
   case 'H':
     return new HillClimbingSolver();
+
+  case 'P':
+    return new HumanSolver();
 
   default:
     return new BFSSolver();
@@ -92,13 +85,8 @@ int main(int argc, char const* argv[]) {
 
   if (argc > 1) {
     char exec_option = argv[1][0];
-    if (exec_option == 'P') {
-      play(puzzle);
-    }
-    else {
-      ISolver* solver = get_solver(exec_option);
-      solve(puzzle, solver, print);
-    }
+    ISolver* solver = get_solver(exec_option);
+    solve(puzzle, solver, print);
   }
 
   return 0;
