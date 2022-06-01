@@ -33,7 +33,7 @@ mem: $(TARGET_NAME)
 	valgrind --leak-check=full --show-leak-kinds=all $(TARGET_NAME)
 
 test: $(TARGET_NAME)
-	@bash ./run-tests $(TARGET_NAME) $(ALG)
+	@bash ./run-test $(TARGET_NAME) $(ALG) $(LIMIT)
 
 time: $(TARGET_NAME)
 	@bash time $(TARGET_NAME)
