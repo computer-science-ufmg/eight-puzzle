@@ -31,8 +31,9 @@ std::queue<direction_t> ISolver::get_path(SolverNode* node) {
 }
 
 void ISolver::free_nodes(std::vector<SolverNode*>& nodes) {
-  for (std::vector<SolverNode*>::iterator it = nodes.begin(); it != nodes.end(); ++it) {
-    SolverNode* node = *it;
+  while (!nodes.empty()) {
+    SolverNode* node = nodes.back();
+    nodes.pop_back();
     delete node;
   }
 }

@@ -2,8 +2,8 @@
 #include<stack>
 
 #include"./include/eight-puzzle.hpp"
-#include"./include/solver/solver.hpp"
 #include"./include/solver/bfs-solver.hpp"
+#include"./include/solver/ids-solver.hpp"
 
 void play(EightPuzzle& puzzle) {
   puzzle.print_instance();
@@ -19,13 +19,14 @@ void play(EightPuzzle& puzzle) {
 
 ISolver* get_solver(char algorithm) {
   switch (algorithm) {
-  case 'P':
+  case 'B':
     return new BFSSolver();
-    break;
+
+  case 'I':
+    return new IDSSolver();
 
   default:
     return new BFSSolver();
-    break;
   }
 }
 
@@ -45,6 +46,7 @@ void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
 
   std::cout << solution.size() << "\n";
   if (print_solution) {
+    std::cout << '\n';
     puzzle.print_instance();
     while (!solution.empty()) {
       direction_t move = solution.front();
@@ -57,6 +59,8 @@ void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
 
 int main(int argc, char const* argv[]) {
   EightPuzzle puzzle;
+
+  bool print = strncmp("PRINT", argv[argc - 1], 5) == 0;
 
   if (argc >= 2 + PUZZLE_INSTANCE_SIZE) {
     puzzle = EightPuzzle::read_instance(argv + 2);
@@ -77,7 +81,7 @@ int main(int argc, char const* argv[]) {
     }
     else {
       ISolver* solver = get_solver(exec_option);
-      solve(puzzle, solver, false);
+      solve(puzzle, solver, print);
     }
   }
 

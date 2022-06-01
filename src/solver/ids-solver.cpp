@@ -12,6 +12,12 @@ IDSSolver::IDSSolver() {
 IDSSolver::~IDSSolver() {
 }
 
+std::string IDSSolver::compose_id(EightPuzzle& puzzle, int moves) {
+  std::stringstream ss;
+  ss << moves << puzzle.get_id();
+  return ss.str();
+}
+
 solution_t IDSSolver::solve(EightPuzzle& puzzle) {
   std::stack<SolverNode*> stack;
   std::vector<SolverNode*> nodes;
@@ -23,12 +29,13 @@ solution_t IDSSolver::solve(EightPuzzle& puzzle) {
   }
 
   this->max_depth = 0;
-  SolverNode* starting_node = create_solver_node(puzzle, nullptr);
-  nodes.push_back(starting_node);
 
   while (this->max_depth < this->limit_depth) {
     this->max_depth++;
     visited.clear();
+
+    SolverNode* starting_node = create_solver_node(puzzle, nullptr);
+    nodes.push_back(starting_node);
     stack.push(starting_node);
 
     while (!stack.empty()) {
@@ -36,8 +43,9 @@ solution_t IDSSolver::solve(EightPuzzle& puzzle) {
       EightPuzzle& instance = node->puzzle;
       stack.pop();
 
-      visited[instance.get_id()] = true;
+      visited[compose_id(instance, node->moves)] = true;
       if (instance.is_solved()) {
+        free_nodes(nodes);
         return get_path(node);
       }
 
@@ -48,18 +56,22 @@ solution_t IDSSolver::solve(EightPuzzle& puzzle) {
       std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
       for (std::vector<EightPuzzle>::iterator it = possible_moves.begin(); it != possible_moves.end(); ++it) {
         EightPuzzle possible_move = *it;
+        new_node = create_solver_node(possible_move, node);
 
-        bool node_visited = visited[possible_move.get_id()] == true;
+        bool node_visited = visited[compose_id(possible_move, new_node->moves)] == true;
         bool is_inverse_parent_move = EightPuzzle::is_inverse_move(possible_move.get_last_move(), node->last_move);
         bool valid = possible_move.is_valid();
 
         if (!node_visited && !is_inverse_parent_move && valid) {
-          new_node = create_solver_node(possible_move, node);
           stack.push(new_node);
           nodes.push_back(new_node);
         }
+        else {
+          delete new_node;
+        }
       }
     }
+    free_nodes(nodes);
   }
 
   free_nodes(nodes);

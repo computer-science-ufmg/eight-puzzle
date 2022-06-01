@@ -16,6 +16,8 @@ private:
   int limit_depth = 100;
   int max_depth = 0;
 
+  std::string compose_id(EightPuzzle& puzzle, int moves);
+
 public:
   IDSSolver();
   ~IDSSolver();
