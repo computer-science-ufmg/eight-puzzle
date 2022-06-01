@@ -22,8 +22,8 @@ for testname in $testnames; do
   TMP_OUT=$($EXEC $ALG $(cat tests/$testname))
   if [[ "$(cat tests/$outname)" != "$TMP_OUT" ]]; then
     failed=$((failed+1))
-    echo "Test $testname failed:"
-    echo "Expected $(cat tests/$outname), got $TMP_OUT"
+    echo -e "\033[31;1mTest $testname failed:\033[0m"
+    echo -e "\tExpected $(cat tests/$outname), got $TMP_OUT"
   else
     passed=$((passed+1))
     echo "Test $testname passed"
