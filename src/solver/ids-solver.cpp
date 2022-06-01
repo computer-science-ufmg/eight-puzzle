@@ -75,5 +75,5 @@ solution_t IDSSolver::solve(EightPuzzle& puzzle) {
   }
 
   free_nodes(nodes);
-  throw std::logic_error("Unreachable exception: puzzle either has no solution, or it could not be found within the limit depth");
+  throw std::invalid_argument("Puzzle either has no solution, or it could not be found within the limit depth");
 }

@@ -4,6 +4,10 @@
 #include"./include/eight-puzzle.hpp"
 #include"./include/solver/bfs-solver.hpp"
 #include"./include/solver/ids-solver.hpp"
+#include"./include/solver/ucs-solver.hpp"
+#include"./include/solver/astar-solver.hpp"
+#include"./include/solver/gbf-solver.hpp"
+#include"./include/solver/hill-climbing-solver.hpp"
 
 void play(EightPuzzle& puzzle) {
   puzzle.print_instance();
@@ -25,6 +29,18 @@ ISolver* get_solver(char algorithm) {
   case 'I':
     return new IDSSolver();
 
+  case 'U':
+    return new UCSSolver();
+
+  case 'A':
+    return new AStarSolver();
+
+  case 'G':
+    return new GBFSolver();
+
+  case 'H':
+    return new HillClimbingSolver();
+
   default:
     return new BFSSolver();
   }
@@ -36,7 +52,7 @@ void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
     solution = solver->solve(puzzle);
   }
   catch (std::invalid_argument& e) {
-    std::cout << e.what() << std::endl;
+    std::cout << "Error solving puzzle: " << e.what() << std::endl;
     return;
   }
   catch (std::logic_error& e) {

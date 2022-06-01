@@ -54,5 +54,5 @@ solution_t BFSSolver::solve(EightPuzzle& puzzle) {
   }
 
   free_nodes(nodes);
-  throw std::logic_error("Impossible exception: puzzle has no solution");
+  throw std::invalid_argument("Puzzle has no solution");
 }
