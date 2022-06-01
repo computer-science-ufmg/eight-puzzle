@@ -30,10 +30,22 @@ ISolver* get_solver(char algorithm) {
 }
 
 void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
-  solution_t solution = solver->solve(puzzle);
+  solution_t solution;
+  try {
+    solution = solver->solve(puzzle);
+  }
+  catch (std::invalid_argument& e) {
+    std::cout << e.what() << std::endl;
+    return;
+  }
+  catch (std::logic_error& e) {
+    std::cout << "Something went terribly wrong: " << e.what() << std::endl;
+    return;
+  }
 
   if (print_solution) {
     std::cout << solution.size() << "\n\n";
+    puzzle.print_instance();
     while (!solution.empty()) {
       direction_t move = solution.front();
       solution.pop();
