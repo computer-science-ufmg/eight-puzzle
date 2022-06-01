@@ -11,6 +11,25 @@ HumanSolver::HumanSolver() {
 HumanSolver::~HumanSolver() {
 }
 
+direction_t HumanSolver::get_direction(char dir_char) {
+  switch (dir_char) {
+  case 'w':
+  case 'W':
+    return UP;
+  case 'a':
+  case 'A':
+    return LEFT;
+  case 's':
+  case 'S':
+    return DOWN;
+  case 'd':
+  case 'D':
+    return RIGHT;
+  default:
+    throw std::invalid_argument("Invalid direction");
+  }
+}
+
 solution_t HumanSolver::solve(EightPuzzle& puzzle) {
   SolverNode* node = create_solver_node(puzzle, nullptr);
   std::vector<SolverNode*> nodes;
@@ -18,10 +37,10 @@ solution_t HumanSolver::solve(EightPuzzle& puzzle) {
   system("clear");
   puzzle.print_instance();
   while (!puzzle.is_solved()) {
-    std::cout << "0: UP\n1: DOWN\n2: LEFT\n3: RIGHT\nEnter a direction: ";
-    int direction;
+    std::cout << "W: UP\nS: DOWN\nA: LEFT\nD: RIGHT\nEnter a direction: ";
+    char direction;
     std::cin >> direction;
-    puzzle.move(direction);
+    puzzle.move(get_direction(direction));
 
     node = create_solver_node(puzzle, node);
     nodes.push_back(node);

@@ -13,6 +13,7 @@
 
 class HumanSolver : public ISolver {
 private:
+  direction_t get_direction(char dir_char);
 
 public:
   HumanSolver();
