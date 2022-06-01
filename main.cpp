@@ -43,8 +43,8 @@ void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
     return;
   }
 
+  std::cout << solution.size() << "\n";
   if (print_solution) {
-    std::cout << solution.size() << "\n\n";
     puzzle.print_instance();
     while (!solution.empty()) {
       direction_t move = solution.front();
@@ -77,7 +77,7 @@ int main(int argc, char const* argv[]) {
     }
     else {
       ISolver* solver = get_solver(exec_option);
-      solve(puzzle, solver, true);
+      solve(puzzle, solver, false);
     }
   }
 

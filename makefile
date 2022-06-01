@@ -26,11 +26,14 @@ clean:
 	rm -rf $(BUILD_PATH)/*
 	rm $(TARGET_NAME)
 
-run:
+run: $(TARGET_NAME)
 	$(TARGET_NAME)
 
-mem:
+mem: $(TARGET_NAME)
 	valgrind --leak-check=full --show-leak-kinds=all $(TARGET_NAME)
+
+test: $(TARGET_NAME)
+	@bash ./run-tests $(TARGET_NAME) $(ALG)
 
 time: $(TARGET_NAME)
 	@bash time $(TARGET_NAME)

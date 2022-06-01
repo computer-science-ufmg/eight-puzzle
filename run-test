@@ -1,0 +1,37 @@
+#!/bin/bash
+
+EXEC=$1
+ALG=$2
+LIMIT=$3
+
+if [[ -z $LIMIT ]]; then
+  testnames=$(ls ./tests | grep in | sort -V)
+else
+  testnames=$(ls ./tests | grep in | sort -V | head -n $LIMIT)
+fi
+
+
+total=0
+passed=0
+failed=0
+
+for testname in $testnames; do
+  outname=$(echo $testname | sed 's/in/out/')
+  total=$((total+1))
+
+  TMP_OUT=$($EXEC $ALG $(cat tests/$testname))
+  if [[ "$(cat tests/$outname)" != "$TMP_OUT" ]]; then
+    failed=$((failed+1))
+    echo "Test $testname failed:"
+    echo "Expected $(cat tests/$outname), got $TMP_OUT"
+  else
+    passed=$((passed+1))
+    echo "Test $testname passed"
+  fi
+done
+
+echo -e "\n\033[1mRan ${total} tests:\033[0m"
+echo -e "\t\033[92;1mpassed ${passed} tests\033[0m"
+if [[ $failed -gt 0 ]]; then
+  echo -e "\t\033[31;1mfailed ${failed} tests\033[0m"
+fi
