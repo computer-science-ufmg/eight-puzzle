@@ -59,10 +59,8 @@ solution_t IDSSolver::solve(EightPuzzle& puzzle) {
         new_node = create_solver_node(possible_move, node);
 
         bool node_visited = visited[compose_id(possible_move, new_node->moves)] == true;
-        bool is_inverse_parent_move = EightPuzzle::is_inverse_move(possible_move.get_last_move(), node->last_move);
-        bool valid = possible_move.is_valid();
 
-        if (!node_visited && !is_inverse_parent_move && valid) {
+        if (!node_visited) {
           stack.push(new_node);
           nodes.push_back(new_node);
         }

@@ -21,7 +21,7 @@ solution_t HillClimbingSolver::solve(EightPuzzle& puzzle) {
 
   nodes.push_back(node);
 
-  while (k < 5 && current_value != 0.0) {
+  while (k < MAX_LATERAL_MOVEMENTS && current_value != 0.0) {
     std::vector<EightPuzzle> neighrbours = node->puzzle.get_possible_moves();
     EightPuzzle best_neighbour;
     float best_neighbour_value = this->heuristic->max();

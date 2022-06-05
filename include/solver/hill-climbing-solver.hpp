@@ -9,6 +9,8 @@
 #ifndef HILL_CLIMBING_SOLVER_HPP
 #define HILL_CLIMBING_SOLVER_HPP
 
+#define MAX_LATERAL_MOVEMENTS 8
+
 #include "./solver.hpp"
 
 #include "../heuristic/heuristic.hpp"

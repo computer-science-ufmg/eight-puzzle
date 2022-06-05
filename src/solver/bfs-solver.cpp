@@ -42,10 +42,8 @@ solution_t BFSSolver::solve(EightPuzzle& puzzle) {
       EightPuzzle possible_move = *it;
 
       bool node_visited = visited[possible_move.get_id()] == true;
-      bool is_inverse_parent_move = EightPuzzle::is_inverse_move(possible_move.get_last_move(), node->last_move);
-      bool valid = possible_move.is_valid();
 
-      if (!node_visited && !is_inverse_parent_move && valid) {
+      if (!node_visited) {
         new_node = create_solver_node(possible_move, node);
         queue.push(new_node);
         nodes.push_back(new_node);
