@@ -80,7 +80,7 @@ bool EightPuzzle::is_valid(eight_puzzle_intstance_t& instance) {
 bool EightPuzzle::is_solved(eight_puzzle_intstance_t& instance) {
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
     for (int j = 0; j < PUZZLE_INSTANCE_WIDTH; j++) {
-      int expected_value = ((i * PUZZLE_INSTANCE_WIDTH) + j + 1) % (PUZZLE_INSTANCE_SIZE);
+      int expected_value = ((i * PUZZLE_INSTANCE_WIDTH) + j + 1) % PUZZLE_INSTANCE_SIZE;
       if (instance[i][j] != expected_value) {
         return false;
       }

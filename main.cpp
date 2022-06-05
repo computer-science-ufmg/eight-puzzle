@@ -2,6 +2,7 @@
 #include<stack>
 
 #include"./include/eight-puzzle.hpp"
+
 #include"./include/solver/bfs-solver.hpp"
 #include"./include/solver/ids-solver.hpp"
 #include"./include/solver/ucs-solver.hpp"
@@ -9,6 +10,8 @@
 #include"./include/solver/gbf-solver.hpp"
 #include"./include/solver/hill-climbing-solver.hpp"
 #include"./include/solver/human-solver.hpp"
+
+#include"./include/heuristic/miss-count-heuristic.hpp"
 
 
 ISolver* get_solver(char algorithm) {
@@ -29,7 +32,7 @@ ISolver* get_solver(char algorithm) {
     return new GBFSolver();
 
   case 'H':
-    return new HillClimbingSolver();
+    return new HillClimbingSolver(new MissCountHeuristic());
 
   case 'P':
     return new HumanSolver();

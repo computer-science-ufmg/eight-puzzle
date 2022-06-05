@@ -12,6 +12,10 @@ struct SolverNode {
   SolverNode* parent;
   int moves;
   int last_move;
+
+  int operator<(SolverNode const& other) const {
+    return -(this->moves - other.moves);
+  }
 };
 
 class ISolver {

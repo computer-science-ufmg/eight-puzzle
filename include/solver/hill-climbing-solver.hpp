@@ -11,11 +11,14 @@
 
 #include "./solver.hpp"
 
+#include "../heuristic/heuristic.hpp"
+
 class HillClimbingSolver : public ISolver {
 private:
+  IHeuristic* heuristic = nullptr;
 
 public:
-  HillClimbingSolver();
+  HillClimbingSolver(IHeuristic* heuristic);
   ~HillClimbingSolver();
 
   solution_t solve(EightPuzzle& puzzle);

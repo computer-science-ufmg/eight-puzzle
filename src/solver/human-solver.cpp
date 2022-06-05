@@ -33,13 +33,12 @@ direction_t HumanSolver::get_direction(char dir_char) {
 solution_t HumanSolver::solve(EightPuzzle& puzzle) {
   SolverNode* node = create_solver_node(puzzle, nullptr);
   std::vector<SolverNode*> nodes;
+  char direction;
 
   system("clear");
   puzzle.print_instance();
-  while (!puzzle.is_solved()) {
-    std::cout << "W: UP\nS: DOWN\nA: LEFT\nD: RIGHT\nEnter a direction: ";
-    char direction;
-    std::cin >> direction;
+  std::cout << "W: UP\nS: DOWN\nA: LEFT\nD: RIGHT\nEnter a direction: ";
+  while (std::cin >> direction) {
     puzzle.move(get_direction(direction));
 
     node = create_solver_node(puzzle, node);
@@ -47,6 +46,10 @@ solution_t HumanSolver::solve(EightPuzzle& puzzle) {
 
     system("clear");
     puzzle.print_instance();
+    if (puzzle.is_solved()) {
+      break;
+    }
+    std::cout << "W: UP\nS: DOWN\nA: LEFT\nD: RIGHT\nEnter a direction: ";
   }
   solution_t solution = get_path(node);
   free_nodes(nodes);
