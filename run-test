@@ -33,4 +33,5 @@ echo -e "\n\033[1mRan ${total} tests:\033[0m"
 echo -e "\t\033[92;1mpassed ${passed} tests\033[0m"
 if [[ $failed -gt 0 ]]; then
   echo -e "\t\033[31;1mfailed ${failed} tests\033[0m"
+  exit 1
 fi
