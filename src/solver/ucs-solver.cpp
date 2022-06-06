@@ -12,18 +12,18 @@ UCSSolver::~UCSSolver() {
 }
 
 solution_t UCSSolver::solve(EightPuzzle& puzzle) {
-  std::priority_queue<SolverNode*> queue;
+  std::priority_queue<std::pair<int, SolverNode*>> queue;
   std::vector<SolverNode*> nodes;
   std::map<std::string, int> visited;
   SolverNode* new_node = nullptr;
 
   new_node = create_solver_node(puzzle, nullptr);
-  queue.push(new_node);
+  queue.push(std::make_pair(-new_node->moves, new_node));
   nodes.push_back(new_node);
   visited[puzzle.get_id()] = new_node->moves;
 
   while (!queue.empty()) {
-    SolverNode* node = queue.top();
+    auto [_, node] = queue.top();
     queue.pop();
 
     EightPuzzle& instance = node->puzzle;
@@ -43,7 +43,7 @@ solution_t UCSSolver::solve(EightPuzzle& puzzle) {
       if (!node_visited) {
         new_node = create_solver_node(possible_move, node);
         visited[possible_move.get_id()] = new_node->moves;
-        queue.push(new_node);
+        queue.push(std::make_pair(-new_node->moves, new_node));
         nodes.push_back(new_node);
       }
     }
