@@ -54,8 +54,7 @@ solution_t GBFSolver::solve(EightPuzzle& puzzle) {
       continue;
     }
 
-    std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
-    for (auto possible_move : possible_moves) {
+    for (auto possible_move : instance.get_possible_moves()) {
       if (!is_visited(possible_move)) {
         insert(possible_move, node);
       }

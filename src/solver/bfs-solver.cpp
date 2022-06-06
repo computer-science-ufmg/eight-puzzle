@@ -49,8 +49,7 @@ solution_t BFSSolver::solve(EightPuzzle& puzzle) {
     EightPuzzle& instance = node->puzzle;
     visited[instance.get_id()] = true;
 
-    std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
-    for (auto possible_move : possible_moves) {
+    for (auto possible_move : instance.get_possible_moves()) {
       if (!is_visited(possible_move)) {
         new_node = insert(possible_move, node);
         if (possible_move.is_solved()) {

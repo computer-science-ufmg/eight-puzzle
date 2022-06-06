@@ -11,25 +11,44 @@ UCSSolver::UCSSolver() {
 UCSSolver::~UCSSolver() {
 }
 
-solution_t UCSSolver::solve(EightPuzzle& puzzle) {
-  std::priority_queue<std::pair<int, SolverNode*>> queue;
-  std::vector<SolverNode*> nodes;
-  std::map<std::string, int> visited;
-  SolverNode* new_node = nullptr;
+ucs_node_pair_t UCSSolver::get_node_pair(SolverNode* node) {
+  return std::make_pair(-node->moves, node);
+}
 
-  new_node = create_solver_node(puzzle, nullptr);
-  queue.push(std::make_pair(-new_node->moves, new_node));
-  nodes.push_back(new_node);
+void UCSSolver::insert(EightPuzzle& puzzle, SolverNode* parent) {
+  SolverNode* new_node = create_solver_node(puzzle, parent);
   visited[puzzle.get_id()] = new_node->moves;
+  queue.push(get_node_pair(new_node));
+  nodes.push_back(new_node);
+}
+
+SolverNode* UCSSolver::get_next() {
+  auto [_, node] = queue.top();
+  queue.pop();
+  return node;
+}
+
+bool UCSSolver::is_visited(EightPuzzle& puzzle) {
+  return visited.find(puzzle.get_id()) != visited.end();
+}
+
+void UCSSolver::clear() {
+  while (!queue.empty()) queue.pop();
+  free_nodes(this->nodes);
+  this->visited.clear();
+}
+
+solution_t UCSSolver::solve(EightPuzzle& puzzle) {
+
+  insert(puzzle, nullptr);
 
   while (!queue.empty()) {
-    auto [_, node] = queue.top();
-    queue.pop();
+    SolverNode* node = get_next();
 
     EightPuzzle& instance = node->puzzle;
     if (instance.is_solved()) {
       solution_t solution = get_path(node);
-      free_nodes(nodes);
+      clear();
       return solution;
     }
 
@@ -37,18 +56,13 @@ solution_t UCSSolver::solve(EightPuzzle& puzzle) {
       continue;
     }
 
-    std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
-    for (auto possible_move : possible_moves) {
-      bool node_visited = visited.find(possible_move.get_id()) != visited.end();
-      if (!node_visited) {
-        new_node = create_solver_node(possible_move, node);
-        visited[possible_move.get_id()] = new_node->moves;
-        queue.push(std::make_pair(-new_node->moves, new_node));
-        nodes.push_back(new_node);
+    for (auto possible_move : instance.get_possible_moves()) {
+      if (!is_visited(possible_move)) {
+        insert(possible_move, node);
       }
     }
   }
 
-  free_nodes(nodes);
+  clear();
   throw std::invalid_argument("Puzzle has no solution");
 }
