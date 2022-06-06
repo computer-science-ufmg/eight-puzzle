@@ -14,7 +14,27 @@ struct SolverNode {
   int last_move;
 
   int operator<(SolverNode const& other) const {
-    return -(this->moves - other.moves);
+    return (this->moves < other.moves);
+  }
+
+  int operator>(SolverNode const& other) const {
+    return other < *this;
+  }
+
+  int operator>=(SolverNode const& other) const {
+    return !(*this < other);
+  }
+
+  int operator<=(SolverNode const& other) const {
+    return !(other < *this);
+  }
+
+  int operator==(SolverNode const& other) const {
+    return other.moves == this->moves;
+  }
+
+  int operator!=(SolverNode const& other) const {
+    return !(other == *this);
   }
 };
 

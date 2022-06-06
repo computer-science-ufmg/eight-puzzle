@@ -25,27 +25,34 @@ solution_t UCSSolver::solve(EightPuzzle& puzzle) {
   queue.push(new_node);
   nodes.push_back(new_node);
 
+  if (puzzle.is_solved()) {
+    solution_t solution = get_path(new_node);
+    free_nodes(nodes);
+    return solution;
+  }
+
   while (!queue.empty()) {
     SolverNode* node = queue.top();
     queue.pop();
 
     EightPuzzle& instance = node->puzzle;
     visited[instance.get_id()] = true;
-    if (instance.is_solved()) {
-      solution_t solution = get_path(node);
-      free_nodes(nodes);
-      return solution;
-    }
 
     std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
     for (std::vector<EightPuzzle>::iterator it = possible_moves.begin(); it != possible_moves.end(); ++it) {
       EightPuzzle possible_move = *it;
 
-      bool node_visited = visited[possible_move.get_id()] == true;
-      bool is_inverse_parent_move = EightPuzzle::is_inverse_move(possible_move.get_last_move(), node->last_move);
-      bool valid = possible_move.is_valid();
+      if (possible_move.is_solved()) {
+        node = create_solver_node(possible_move, node);
+        nodes.push_back(node);
+        solution_t solution = get_path(node);
+        free_nodes(nodes);
+        return solution;
+      }
 
-      if (!node_visited && !is_inverse_parent_move && valid) {
+      bool node_visited = visited[possible_move.get_id()] == true;
+
+      if (!node_visited) {
         new_node = create_solver_node(possible_move, node);
         queue.push(new_node);
         nodes.push_back(new_node);
