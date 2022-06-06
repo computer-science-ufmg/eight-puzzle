@@ -18,7 +18,6 @@ void GBFSolver::insert(EightPuzzle& puzzle, SolverNode* parent) {
   SolverNode* new_node = create_solver_node(puzzle, parent);
   this->queue.push(get_node_pair(new_node));
   this->nodes.push_back(new_node);
-  this->visited[puzzle.get_id()] = new_node->moves;
 }
 
 SolverNode* GBFSolver::get_next() {
@@ -28,7 +27,7 @@ SolverNode* GBFSolver::get_next() {
 }
 
 bool GBFSolver::is_visited(EightPuzzle& puzzle) {
-  return visited.find(puzzle.get_id()) != visited.end();
+  return visited[puzzle.get_id()] == true;
 }
 
 void GBFSolver::clear() {
@@ -39,6 +38,7 @@ void GBFSolver::clear() {
 
 solution_t GBFSolver::solve(EightPuzzle& puzzle) {
   insert(puzzle, nullptr);
+  this->visited[puzzle.get_id()] = true;
 
   while (!queue.empty()) {
     SolverNode* node = get_next();
@@ -50,13 +50,10 @@ solution_t GBFSolver::solve(EightPuzzle& puzzle) {
       return solution;
     }
 
-    if (visited[node->puzzle.get_id()] < node->moves) {
-      continue;
-    }
-
     for (auto possible_move : instance.get_possible_moves()) {
       if (!is_visited(possible_move)) {
         insert(possible_move, node);
+        this->visited[possible_move.get_id()] = true;
       }
     }
   }

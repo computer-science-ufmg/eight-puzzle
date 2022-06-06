@@ -1,6 +1,6 @@
 /**
  * @file hill-climbing-solver.hpp
- * @brief Hill climbing solver implementation. Optimal and complete algorithm.
+ * @brief Hill climbing solver implementation. Not complete, not optimal algorithm.
  * @author Luiz Philipe <luizphilippe@dcc.ufmg.br>
  * @version 0.1
  *

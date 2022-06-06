@@ -1,6 +1,6 @@
 /**
  * @file gbf-solver.hpp
- * @brief Greedy best-first solver implementation. Optimal and complete algorithm.
+ * @brief Greedy best-first solver implementation. Not optimal and complete algorithm.
  * @author Luiz Philipe <luizphilippe@dcc.ufmg.br>
  * @version 0.1
  *
@@ -24,7 +24,7 @@ private:
   IHeuristic* heuristic;
   gbf_queue_t queue;
   node_vector_t nodes;
-  std::map<std::string, int> visited;
+  std::map<std::string, bool> visited;
 
   void insert(EightPuzzle& puzzle, SolverNode* parent);
   SolverNode* get_next();
