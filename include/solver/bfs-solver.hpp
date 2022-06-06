@@ -18,7 +18,7 @@
 class BFSSolver : public ISolver {
 private:
   std::queue<SolverNode*> queue;
-  std::vector<SolverNode*> nodes;
+  node_vector_t nodes;
   std::map<std::string, bool> visited;
 
   SolverNode* insert(EightPuzzle& puzzle, SolverNode* parent);

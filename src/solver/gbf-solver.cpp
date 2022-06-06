@@ -11,7 +11,7 @@ GBFSolver::~GBFSolver() {
 }
 
 gbf_node_pair_t GBFSolver::get_node_pair(SolverNode* node) {
-  return std::make_pair(-this->heuristic->get_value(node->puzzle), node);
+  return std::make_pair(this->heuristic->get_value(node->puzzle), node);
 }
 
 void GBFSolver::insert(EightPuzzle& puzzle, SolverNode* parent) {

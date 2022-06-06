@@ -38,12 +38,14 @@ struct SolverNode {
   }
 };
 
+typedef std::vector<SolverNode*> node_vector_t;
+
 class ISolver {
 public:
   virtual ~ISolver() {}
   virtual solution_t solve(EightPuzzle& puzzle) = 0;
 
-  void free_nodes(std::vector<SolverNode*>& nodes);
+  void free_nodes(node_vector_t& nodes);
   std::queue<direction_t> get_path(SolverNode* node);
 };
 

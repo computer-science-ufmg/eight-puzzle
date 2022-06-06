@@ -17,12 +17,13 @@
 
 
 typedef std::pair<float, SolverNode*> gbf_node_pair_t;
+typedef std::priority_queue<gbf_node_pair_t> gbf_queue_t;
 
 class GBFSolver : public ISolver {
 private:
   IHeuristic* heuristic;
-  std::priority_queue<gbf_node_pair_t> queue;
-  std::vector<SolverNode*> nodes;
+  gbf_queue_t queue;
+  node_vector_t nodes;
   std::map<std::string, int> visited;
 
   void insert(EightPuzzle& puzzle, SolverNode* parent);

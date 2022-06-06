@@ -12,7 +12,7 @@ UCSSolver::~UCSSolver() {
 }
 
 ucs_node_pair_t UCSSolver::get_node_pair(SolverNode* node) {
-  return std::make_pair(-node->moves, node);
+  return std::make_pair(node->moves, node);
 }
 
 void UCSSolver::insert(EightPuzzle& puzzle, SolverNode* parent) {

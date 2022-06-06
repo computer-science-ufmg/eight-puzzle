@@ -14,7 +14,7 @@ HillClimbingSolver::~HillClimbingSolver() {
 }
 
 solution_t HillClimbingSolver::solve(EightPuzzle& puzzle) {
-  std::vector<SolverNode*> nodes;
+  node_vector_t nodes;
   SolverNode* node = create_solver_node(puzzle, nullptr);
   float current_value = this->heuristic->get_value(node->puzzle);
   int k = 0;

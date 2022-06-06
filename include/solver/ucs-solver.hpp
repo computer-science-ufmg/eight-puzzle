@@ -16,11 +16,12 @@
 #include "./solver.hpp"
 
 typedef std::pair<int, SolverNode*> ucs_node_pair_t;
+typedef std::priority_queue<ucs_node_pair_t, std::vector<ucs_node_pair_t>, std::greater<ucs_node_pair_t>> ucs_queue_t;
 
 class UCSSolver : public ISolver {
 private:
-  std::priority_queue<ucs_node_pair_t> queue;
-  std::vector<SolverNode*> nodes;
+  ucs_queue_t queue;
+  node_vector_t nodes;
   std::map<std::string, int> visited;
 
   void insert(EightPuzzle& puzzle, SolverNode* parent);

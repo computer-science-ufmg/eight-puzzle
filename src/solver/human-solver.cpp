@@ -32,7 +32,7 @@ direction_t HumanSolver::get_direction(char dir_char) {
 
 solution_t HumanSolver::solve(EightPuzzle& puzzle) {
   SolverNode* node = create_solver_node(puzzle, nullptr);
-  std::vector<SolverNode*> nodes;
+  node_vector_t nodes;
   char direction;
 
   system("clear");

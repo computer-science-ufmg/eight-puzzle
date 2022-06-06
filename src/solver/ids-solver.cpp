@@ -20,7 +20,7 @@ std::string IDSSolver::compose_id(EightPuzzle& puzzle, int moves) {
 
 solution_t IDSSolver::solve(EightPuzzle& puzzle) {
   std::stack<SolverNode*> stack;
-  std::vector<SolverNode*> nodes;
+  node_vector_t nodes;
   std::map<std::string, bool> visited;
   SolverNode* new_node = nullptr;
 
