@@ -26,6 +26,8 @@ private:
   int empty_y;
   int last_move = NO_MOVE;
 
+  static int count_inversions(eight_puzzle_intstance_t& instance);
+
 public:
   EightPuzzle(eight_puzzle_intstance_t& instance);
   EightPuzzle();
@@ -35,6 +37,7 @@ public:
   void print_instance(std::ostream& out = std::cout);
   bool is_valid();
   bool is_solved();
+  bool is_solvable();
   std::vector<EightPuzzle> get_possible_moves();
   bool can_move(direction_t direction);
   void move(direction_t direction);
@@ -46,6 +49,7 @@ public:
   static void print_instance(eight_puzzle_intstance_t& instance, std::ostream& out = std::cout);
   static bool is_valid(eight_puzzle_intstance_t& instance);
   static bool is_solved(eight_puzzle_intstance_t& instance);
+  static bool is_solvable(eight_puzzle_intstance_t& instance);
   static bool is_inverse_move(direction_t a, direction_t b);
 };
 

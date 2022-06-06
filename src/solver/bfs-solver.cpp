@@ -22,8 +22,13 @@ solution_t BFSSolver::solve(EightPuzzle& puzzle) {
   }
 
   new_node = create_solver_node(puzzle, nullptr);
-  queue.push(new_node);
   nodes.push_back(new_node);
+  if (puzzle.is_solved()) {
+    solution_t solution = get_path(new_node);
+    free_nodes(nodes);
+    return solution;
+  }
+  queue.push(new_node);
 
   while (!queue.empty()) {
     SolverNode* node = queue.front();
@@ -31,22 +36,20 @@ solution_t BFSSolver::solve(EightPuzzle& puzzle) {
 
     EightPuzzle& instance = node->puzzle;
     visited[instance.get_id()] = true;
-    if (instance.is_solved()) {
-      solution_t solution = get_path(node);
-      free_nodes(nodes);
-      return solution;
-    }
+
 
     std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
-    for (std::vector<EightPuzzle>::iterator it = possible_moves.begin(); it != possible_moves.end(); ++it) {
-      EightPuzzle possible_move = *it;
-
+    for (auto possible_move : possible_moves) {
       bool node_visited = visited[possible_move.get_id()] == true;
-
       if (!node_visited) {
         new_node = create_solver_node(possible_move, node);
-        queue.push(new_node);
         nodes.push_back(new_node);
+        if (possible_move.is_solved()) {
+          solution_t solution = get_path(new_node);
+          free_nodes(nodes);
+          return solution;
+        }
+        queue.push(new_node);
       }
     }
   }

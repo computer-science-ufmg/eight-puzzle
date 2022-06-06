@@ -86,6 +86,11 @@ int main(int argc, char const* argv[]) {
     return 1;
   }
 
+  if (!puzzle.is_solvable()) {
+    std::cout << "Puzzle is not solvable!\n";
+    return 1;
+  }
+
   if (argc > 1) {
     char exec_option = argv[1][0];
     ISolver* solver = get_solver(exec_option);

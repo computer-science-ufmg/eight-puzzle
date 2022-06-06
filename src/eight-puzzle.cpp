@@ -24,6 +24,26 @@ EightPuzzle::~EightPuzzle() {
 
 /* ===================== Static Begin ===================== */
 
+int EightPuzzle::count_inversions(eight_puzzle_intstance_t& instance) {
+  int inversions = 0;
+
+  for (int i = 0; i < PUZZLE_INSTANCE_SIZE; i++) {
+    if (instance[i / PUZZLE_INSTANCE_WIDTH][i % PUZZLE_INSTANCE_WIDTH] == 0) {
+      continue;
+    }
+    for (int j = i + 1; j < PUZZLE_INSTANCE_SIZE; j++) {
+      if (instance[j / PUZZLE_INSTANCE_WIDTH][j % PUZZLE_INSTANCE_WIDTH] == 0) {
+        continue;
+      }
+      if (instance[i / PUZZLE_INSTANCE_WIDTH][i % PUZZLE_INSTANCE_WIDTH] > instance[j / PUZZLE_INSTANCE_WIDTH][j % PUZZLE_INSTANCE_WIDTH]) {
+        inversions++;
+      }
+    }
+  }
+
+  return inversions;
+}
+
 EightPuzzle EightPuzzle::read_instance(std::istream& in) {
   eight_puzzle_intstance_t instance;
   for (int i = 0; i < PUZZLE_INSTANCE_HEIGHT; i++) {
@@ -89,6 +109,11 @@ bool EightPuzzle::is_solved(eight_puzzle_intstance_t& instance) {
   return true;
 }
 
+bool EightPuzzle::is_solvable(eight_puzzle_intstance_t& instance) {
+  int inversions = EightPuzzle::count_inversions(instance);
+  return inversions % 2 == 0;
+}
+
 bool EightPuzzle::is_inverse_move(direction_t a, direction_t b) {
   return (a + b == UP + DOWN) || (a + b == LEFT + RIGHT);
 }
@@ -109,6 +134,10 @@ bool EightPuzzle::is_valid() {
 
 bool EightPuzzle::is_solved() {
   return EightPuzzle::is_solved(this->instance);
+}
+
+bool EightPuzzle::is_solvable() {
+  return EightPuzzle::is_solvable(this->instance);
 }
 
 bool EightPuzzle::can_move(direction_t direction) {
