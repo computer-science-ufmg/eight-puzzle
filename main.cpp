@@ -29,7 +29,7 @@ ISolver* get_solver(char algorithm) {
     return new AStarSolver();
 
   case 'G':
-    return new GBFSolver();
+    return new GBFSolver(new MissCountHeuristic());
 
   case 'H':
     return new HillClimbingSolver(new MissCountHeuristic());
