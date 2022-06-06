@@ -9,10 +9,22 @@
 #ifndef BFS_SOLVER_HPP
 #define BFS_SOLVER_HPP
 
+#include<queue>
+#include<map>
+#include<vector>
+
 #include "./solver.hpp"
 
 class BFSSolver : public ISolver {
 private:
+  std::queue<SolverNode*> queue;
+  std::vector<SolverNode*> nodes;
+  std::map<std::string, bool> visited;
+
+  SolverNode* insert(EightPuzzle& puzzle, SolverNode* parent);
+  SolverNode* get_next();
+  bool is_visited(EightPuzzle& puzzle);
+  void clear();
 
 public:
   BFSSolver();

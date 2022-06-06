@@ -11,49 +11,57 @@ BFSSolver::BFSSolver() {
 BFSSolver::~BFSSolver() {
 }
 
+SolverNode* BFSSolver::insert(EightPuzzle& puzzle, SolverNode* parent) {
+  SolverNode* new_node = create_solver_node(puzzle, parent);
+  nodes.push_back(new_node);
+  queue.push(new_node);
+  return new_node;
+}
+
+SolverNode* BFSSolver::get_next() {
+  SolverNode* node = queue.front();
+  queue.pop();
+  return node;
+}
+
+bool BFSSolver::is_visited(EightPuzzle& puzzle) {
+  return visited[puzzle.get_id()] == true;
+}
+
+void BFSSolver::clear() {
+  while (!queue.empty()) queue.pop();
+  free_nodes(this->nodes);
+  this->visited.clear();
+}
+
 solution_t BFSSolver::solve(EightPuzzle& puzzle) {
-  std::queue<SolverNode*> queue;
-  std::vector<SolverNode*> nodes;
-  std::map<std::string, bool> visited;
   SolverNode* new_node = nullptr;
 
-  if (!puzzle.is_valid()) {
-    throw std::invalid_argument("Cannot solve invalid puzzle");
-  }
-
-  new_node = create_solver_node(puzzle, nullptr);
-  nodes.push_back(new_node);
+  new_node = insert(puzzle, nullptr);
   if (puzzle.is_solved()) {
     solution_t solution = get_path(new_node);
-    free_nodes(nodes);
+    clear();
     return solution;
   }
-  queue.push(new_node);
 
   while (!queue.empty()) {
-    SolverNode* node = queue.front();
-    queue.pop();
-
+    SolverNode* node = get_next();
     EightPuzzle& instance = node->puzzle;
     visited[instance.get_id()] = true;
 
-
     std::vector<EightPuzzle> possible_moves = instance.get_possible_moves();
     for (auto possible_move : possible_moves) {
-      bool node_visited = visited[possible_move.get_id()] == true;
-      if (!node_visited) {
-        new_node = create_solver_node(possible_move, node);
-        nodes.push_back(new_node);
+      if (!is_visited(possible_move)) {
+        new_node = insert(possible_move, node);
         if (possible_move.is_solved()) {
           solution_t solution = get_path(new_node);
-          free_nodes(nodes);
+          clear();
           return solution;
         }
-        queue.push(new_node);
       }
     }
   }
 
-  free_nodes(nodes);
+  clear();
   throw std::invalid_argument("Puzzle has no solution");
 }
