@@ -17,7 +17,7 @@
 
 
 typedef std::pair<float, SolverNode*> gbf_node_pair_t;
-typedef std::priority_queue<gbf_node_pair_t> gbf_queue_t;
+typedef std::priority_queue<gbf_node_pair_t, std::vector<gbf_node_pair_t>, std::greater<gbf_node_pair_t>> gbf_queue_t;
 
 class GBFSolver : public ISolver {
 private:
