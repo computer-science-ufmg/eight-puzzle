@@ -3,8 +3,8 @@
 
 A proposta do trabalho desenvolvido é implementar a solução do jogo _8-Puzzle_ por meio de diversos algoritmos de busca diferentes. Ao fim, deseja-se comparar esses algoritmos em termos de tempo de execução e consumo de memória. O quebra-cabeça das oito peças (_8-Puzzle_) é composto por uma moldura 3x3 contendo um conjunto de peças numeradas de 1 a 8 e um espaço vazio. O propósito do jogo resume-se a posicionar as peças em uma determinada ordem (Figura 1) apenas deslizando-as pela moldura.
 
-![Figura 1](./docs/images/8-puzzle.jpeg "Figura 1")
 Figura 1: Estado inicial e final para o _8-Puzzle_
+![Figura 1](./docs/images/8-puzzle.jpeg "Figura 1")
 
 # Índice
 
@@ -74,8 +74,8 @@ O projeto contém um makefile responsável pela compilação e execução do có
 
 Observando os tempos de execução em millisegundos para cada algoritmo sob um conjunto de 32 testes (Figura 2), podemos notar que o IDS apresenta a maior tendência de crescimento.
 
-![Figura 2](./docs/images/tempo.png "Figura 2")
 Figura 2: Tempo de execução (ms) para algoritmos de busca.
+![Figura 2](./docs/images/tempo.png "Figura 2")
 
 Isolando os demais algoritmos (Figura 3) podemos fazer duas principais observações:
 
@@ -83,5 +83,5 @@ Nota-se que o BFS e o UCS apresentam tempos próximos inicialmente para as prime
 
 Também é notável que os tempos do GBF e do Hill Climbing estão muito abaixo dos demais, contudo, é preciso lembrar que estes não são algoritmos ótimos e na maioria dos casos forneceram resultados incorretos, oGBF passou em 10 de 32  testes, enquanto o hill climbing passou em 7.
 
-![Figura 3](./docs/images/tempo-2.png "Figura 3")
 Figura 3: Comparação das tendências de crescimento do BFS, UCS, GBF e Hill Climbing.
+![Figura 3](./docs/images/tempo-2.png "Figura 3")
