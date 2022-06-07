@@ -36,4 +36,4 @@ test: $(TARGET_NAME)
 	@bash ./run-test $(TARGET_NAME) $(ALG) $(LIMIT)
 
 time: $(TARGET_NAME)
-	@bash time $(TARGET_NAME)
+	@bash ./measure-time $(TARGET_NAME) > outputs/time.csv

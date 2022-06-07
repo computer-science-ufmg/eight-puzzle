@@ -1,5 +1,6 @@
 #include<iostream>
 #include<stack>
+#include <chrono>
 
 #include"./include/eight-puzzle.hpp"
 
@@ -42,10 +43,15 @@ ISolver* get_solver(char algorithm) {
   }
 }
 
-void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
+void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution, bool timed) {
   solution_t solution;
+  long long elapsed_time;
+
   try {
+    auto start = std::chrono::steady_clock::now();
     solution = solver->solve(puzzle);
+    auto end = std::chrono::steady_clock::now();
+    elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
   }
   catch (std::invalid_argument& e) {
     std::cout << "Error solving puzzle: " << e.what() << std::endl;
@@ -56,7 +62,12 @@ void solve(EightPuzzle& puzzle, ISolver* solver, bool print_solution) {
     return;
   }
 
-  std::cout << solution.size() << "\n";
+  if (timed) {
+    std::cout << solution.size() << ' ' << elapsed_time << "\n";
+  }
+  else {
+    std::cout << solution.size() << "\n";
+  }
   if (print_solution) {
     std::cout << '\n';
     puzzle.print_instance();
@@ -73,6 +84,7 @@ int main(int argc, char const* argv[]) {
   EightPuzzle puzzle;
 
   bool print = strncmp("PRINT", argv[argc - 1], 5) == 0;
+  bool timed = strncmp("TIME", argv[argc - 1], 5) == 0;
 
   if (argc >= 2 + PUZZLE_INSTANCE_SIZE) {
     puzzle = EightPuzzle::read_instance(argv + 2);
@@ -94,7 +106,7 @@ int main(int argc, char const* argv[]) {
   if (argc > 1) {
     char exec_option = argv[1][0];
     ISolver* solver = get_solver(exec_option);
-    solve(puzzle, solver, print);
+    solve(puzzle, solver, print, timed);
   }
 
   return 0;

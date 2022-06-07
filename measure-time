@@ -1,0 +1,34 @@
+#! /bin/bash
+
+set -e
+# set -x
+
+EXEC=$1
+
+declare -a algs
+algs=("B" "I" "U" "G" "H")
+testnames=$(ls ./tests | grep in | sort -V)
+
+echo -e "test,B,I,U,G,H,solution"
+
+for testname in $testnames; do
+  line="$testname"
+  result=0
+
+  for alg in ${algs[@]}; do
+    out=$($EXEC $alg $(cat tests/$testname) TIME)
+    if [[ $out =~ [0-9]+\ [0-9+] ]]; then
+      IFS=' ' read -ra out <<< "$out"
+    else
+      out=(- -)
+    fi
+
+    if [[ "$alg" == "B" ]]; then
+      result=${out[0]}
+    fi
+    
+    line="$line,${out[1]}"
+  done
+  line="$line,$result"
+  echo $line
+done
